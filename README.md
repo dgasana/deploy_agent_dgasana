@@ -22,6 +22,15 @@ Permissions: `attendance_checker.py` is `chmod +x`, `config.json` is `chmod 600`
 **Thresholds:** answer `y` and enter warning (default 75) and failure (default 50). Values must be integers, warning <= 100, failure < warning. `sed` rewrites only the `"warning": N` and `"failure": N` lines in place, so formatting and order are unchanged.
 Finally the app is run (Feature 2) to verify the deployment.
 
+## Feature 2 - Run
+Runs the app on an already deployed project (the same as `cd attendance_tracker_{name} && python3 attendance_checker.py`):
+```
+./deploy_agent.sh --run demo      # runs attendance_tracker_demo
+./deploy_agent.sh                 # menu option 2, then enter the project name
+```
+The terminal is handed to the instructor, who marks each student `P`/`A`. The app updates `Helpers/assets.csv` and appends to `reports/attendance.log` and `reports/absent.log`. If the project folder or `attendance_checker.py` is missing, the script exits with a clear error telling you to deploy first. Ctrl+C here is handled by the app itself (progress is saved), not by the deploy trap.
+Note: each run adds one session, so before running again raise `total_sessions` in `Helpers/config.json` by 1 (the app prints a note when the roster and `total_sessions` disagree). It is mode 600, so edit it as the owner.
+
 ## Feature 3 - Archive
 After a run, each existing log is copied into its own folder with a timestamp:
 ```
